@@ -1,0 +1,49 @@
+<?php
+function live_tweets_block($op='list', $delta=0, $edit=array()) {
+
+   switch ($op) {
+     case 'list':
+       $blocks[0]['info'] = t('Live tweets');
+       return $blocks;
+     case 'view':
+       $blocks['subject'] = t('Live Tweets');
+       $blocks['content'] = t('Loading tweets...');
+       $path = drupal_get_path('module', 'live_tweets');
+       
+       drupal_add_js($path . '/js/live_tweets.js');
+       drupal_add_js(array('live_tweets' => array(
+              'keywords' => urlencode(variable_get('live_tweets_block_keywords', 'Drupal')),
+              'ntweets' => variable_get('live_tweets_block_ntweets', '3'),
+              'refresh' => variable_get('live_tweets_block_refresh', 30) * 1000,
+       )), 'setting');
+       
+       return $blocks;
+     case 'configure':
+      $form['keywords'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Search keywords'),
+      '#default_value' => variable_get('live_tweets_block_keywords', 'Drupal'),
+      '#description' => t('List of keywords separated by spaces'),
+      );
+      $form['ntweets'] = array(
+      '#type' => 'select',
+      '#title' => t('Number of tweets to display'),
+      '#default_value' => variable_get('live_tweets_block_ntweets', 3),
+      '#options' => array('3' => 3, '4' => 4, '5' => 5,  '6' => 6, '10' => 12),
+      );
+      $form['refresh'] = array(
+      '#type' => 'select',
+      '#title' => t('Refresh time in seconds'),
+      '#default_value' => variable_get('live_tweets_block_refresh', 30),
+      '#options' => array('10' => 10, '20' => 20, '30' => 30, '60' => 60),
+      );
+      return $form;
+      
+     case 'save':
+       variable_set('live_tweets_block_keywords', check_plain($edit['keywords']));
+       variable_set('live_tweets_block_ntweets', check_plain($edit['ntweets']));
+       variable_set('live_tweets_block_refresh', check_plain($edit['refresh']));
+      return null; 
+   }
+
+}
