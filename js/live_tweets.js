@@ -38,9 +38,9 @@ liveTweets.parse = function (text) {
 		// Convert urls to links
 		text = text.replace(/((http|https):\/\/[^ ]*)/g, '<a href="$1" target="_blank">$1</a> ');
 		// @User links
-		text = text.replace(/@([^ :.]*)/g, '<a href="http://twitter.com/$1" target="_blank">@$1</a>');
+		text = text.replace(/(^|\s)@(\w+)/g, '$1<a href="http://twitter.com/$2" target="_blank">@$2</a>');
 		// #Search links
-		text = text.replace(/#([^ :.]*)/g, '<a href="http://search.twitter.com/search?q=%23$1" target="_blank">#$1</a>');
+		text = text.replace(/(^|\s)#(\w+)/g, '$1<a href="http://search.twitter.com/search?q=%23$1" target="_blank">#$2</a>');
 		return text
 };
 
