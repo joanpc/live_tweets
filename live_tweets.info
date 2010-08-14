@@ -1,5 +1,5 @@
 name = "Live tweets"
-description = "Provides a block with live tweets"
+description = "Provides a block with live tweets udated in real time"
 core = 6.x
 php = 5.1
 version = "6.x-0.1"

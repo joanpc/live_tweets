@@ -19,30 +19,37 @@ function live_tweets_block($op='list', $delta=0, $edit=array()) {
        
        return $blocks;
      case 'configure':
-      $form['keywords'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Search keywords'),
-      '#default_value' => variable_get('live_tweets_block_keywords', 'Drupal'),
-      '#description' => t('List of keywords separated by spaces'),
+      $form['live_tweets'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Live tweets'),
+      '#tree' => TRUE,
       );
-      $form['ntweets'] = array(
+      $form['live_tweets']['keywords'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Search query'),
+      '#default_value' => variable_get('live_tweets_block_keywords', 'Drupal'),
+      '#description' => t('List of keywords and operators separated by spaces. ex: keyword OR from:user See !url for more info.', array ('!url' => l('http://search.twitter.com/api/', null)) ),
+      );
+      $form['live_tweets']['ntweets'] = array(
       '#type' => 'select',
-      '#title' => t('Number of tweets to display'),
+      '#title' => t('Number of tweets'),
+      '#description' => t('Number of tweets that will be displayed in the block'),
       '#default_value' => variable_get('live_tweets_block_ntweets', 3),
       '#options' => array('3' => 3, '4' => 4, '5' => 5,  '6' => 6, '10' => 12),
       );
-      $form['refresh'] = array(
+      $form['live_tweets']['refresh'] = array(
       '#type' => 'select',
-      '#title' => t('Refresh time in seconds'),
+      '#title' => t('Refresh time'),
+      '#description' => t('Time interval to search for new tweets'), 
       '#default_value' => variable_get('live_tweets_block_refresh', 30),
-      '#options' => array('10' => 10, '20' => 20, '30' => 30, '60' => 60),
+      '#options' => array('10' => '10s', '20' => '20s', '30' => '30s', '60' => '1min'),
       );
       return $form;
       
      case 'save':
-       variable_set('live_tweets_block_keywords', check_plain($edit['keywords']));
-       variable_set('live_tweets_block_ntweets', check_plain($edit['ntweets']));
-       variable_set('live_tweets_block_refresh', check_plain($edit['refresh']));
+       variable_set('live_tweets_block_keywords', check_plain($edit['live_tweets']['keywords']));
+       variable_set('live_tweets_block_ntweets', check_plain($edit['live_tweets']['ntweets']));
+       variable_set('live_tweets_block_refresh', check_plain($edit['live_tweets']['refresh']));
       return null; 
    }
 

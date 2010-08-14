@@ -5,6 +5,9 @@ Simple Drupal module to display a block with a tweet search feed updated in real
 At the moment it only displays content using AJAX directly from the Twitter search API.
 Non javascript visitors will see the block empty.
 
+See the twitter search API for more information on search options and operators 
+http://search.twitter.com/api/
+
 ------------
 Installation
 ------------

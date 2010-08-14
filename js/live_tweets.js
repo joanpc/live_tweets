@@ -5,7 +5,7 @@ liveTweets.last = null;
 
 // Fetch new feeds and display them
 liveTweets.update = function () {
-	var query = "q=" + Drupal.settings.live_tweets.keywords;
+	var query = "q=" + Drupal.settings.live_tweets.keywords || "Drupal";
 	var ntweets = Drupal.settings.live_tweets.ntweets || 5;
 	if (liveTweets.last) query += "&since_id=" + liveTweets.last;
 	$.ajax({
@@ -14,7 +14,10 @@ liveTweets.update = function () {
 		  dataType: "jsonp",
 		  data: "rpp=" + ntweets + "&show_user=true&" + query,
 		  success: function(json){
-			if (!liveTweets.last) $('#block-live_tweets-0 .content').empty();
+			if (!liveTweets.last) { 
+				$('#block-live_tweets-0 .content').empty();
+				$('#block-live_tweets-0').show();
+			}
 			var i;
 			// Append tweets
 			for (i = 0; i < json.results.length; i += 1) {
@@ -33,11 +36,11 @@ liveTweets.update = function () {
 // Parse tweet feeds to create links
 liveTweets.parse = function (text) {
 		// Convert urls to links
-		text = text.replace(/((http|https):\/\/[^ ]*)/g, '<a href="$1">$1</a> ');
+		text = text.replace(/((http|https):\/\/[^ ]*)/g, '<a href="$1" target="_blank">$1</a> ');
 		// @User links
-		text = text.replace(/@([^ :.]*)/g, '<a href="http://twitter.com/$1">@$1</a>');
+		text = text.replace(/@([^ :.]*)/g, '<a href="http://twitter.com/$1" target="_blank">@$1</a>');
 		// #Search links
-		text = text.replace(/#([^ :.]*)/g, '<a href="http://search.twitter.com/search?q=%23$1">#$1</a>');
+		text = text.replace(/#([^ :.]*)/g, '<a href="http://search.twitter.com/search?q=%23$1" target="_blank">#$1</a>');
 		return text
 };
 
