@@ -7,16 +7,7 @@ function live_tweets_block($op='list', $delta=0, $edit=array()) {
        return $blocks;
      case 'view':
        $blocks['subject'] = t('Live Tweets');
-       $blocks['content'] = t('Loading tweets...');
-       $path = drupal_get_path('module', 'live_tweets');
-       
-       drupal_add_js($path . '/js/live_tweets.js');
-       drupal_add_js(array('live_tweets' => array(
-              'keywords' => urlencode(variable_get('live_tweets_block_keywords', 'Drupal')),
-              'ntweets' => variable_get('live_tweets_block_ntweets', '3'),
-              'refresh' => variable_get('live_tweets_block_refresh', 30) * 1000,
-       )), 'setting');
-       
+       $blocks['content'] = t('Loading tweets...');       
        return $blocks;
      case 'configure':
       $form['live_tweets'] = array(
@@ -53,4 +44,16 @@ function live_tweets_block($op='list', $delta=0, $edit=array()) {
       return null; 
    }
 
+}
+/*
+ *  Implementation of hook_init()
+ */
+function live_tweets_init() {
+       $path = drupal_get_path('module', 'live_tweets');       
+       drupal_add_js($path . '/js/live_tweets.js');
+       drupal_add_js(array('live_tweets' => array(
+              'keywords' => urlencode(variable_get('live_tweets_block_keywords', 'Drupal')),
+              'ntweets' => variable_get('live_tweets_block_ntweets', '3'),
+              'refresh' => variable_get('live_tweets_block_refresh', 30) * 1000,
+       )), 'setting');
 }
