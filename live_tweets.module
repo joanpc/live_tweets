@@ -24,7 +24,7 @@ function live_tweets_block($op='list', $delta=0, $edit=array()) {
       $form['live_tweets']['ntweets'] = array(
       '#type' => 'select',
       '#title' => t('Number of tweets'),
-      '#description' => t('Number of tweets that will be displayed in the block'),
+      '#description' => t('Number of tweets that will be displayed'),
       '#default_value' => variable_get('live_tweets_block_ntweets', 3),
       '#options' => array('3' => 3, '4' => 4, '5' => 5,  '6' => 6, '10' => 12),
       );
